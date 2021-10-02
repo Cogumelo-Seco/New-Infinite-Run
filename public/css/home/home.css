@@ -1,0 +1,54 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    color: white;
+    background-color: rgb(160, 160, 160);
+}
+
+section {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: 20px solid rgb(80, 80, 80);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+section h1#gameName {
+    font-size: 90px;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+section div#ownerName {
+    position: absolute;
+    bottom: 1px;
+    right: 1px;
+    color: black;
+}
+
+section ul {    
+    font-size: 30px;
+    width: 30vw;
+    height: 60px;
+    line-height: 50px;
+    margin: 0 auto;
+}
+
+section ul li {
+    border: solid black 2px;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: gray;
+    margin: 10px 0;
+    transition: all 0.5s;
+}
+
+section ul li:hover {
+    font-size: 31px;
+    background-color: rgb(148, 148, 148);
+    transform: translateY(2px);
+}

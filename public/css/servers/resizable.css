@@ -1,0 +1,7 @@
+@media screen and (max-width:597px) {
+    section div#serverCreationWindow,
+    section div#serverList,
+    section div#buttons {
+        width: 90%;
+    }
+}
