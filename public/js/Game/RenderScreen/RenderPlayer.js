@@ -11,8 +11,8 @@ module.exports = (Game, Listener, materials, stateListener, state, data) => {
 
     if (+new Date()-player.speedTime > player.speed) {
         player.speedTime = +new Date()
-        if (keys['KeyW']) cubePlayer.position.z -= 0.5
-        if (keys['KeyS']) cubePlayer.position.z += 0.5
+        //if (keys['KeyW']) cubePlayer.position.z -= 0.5
+        //if (keys['KeyS']) cubePlayer.position.z += 0.5
         if (keys['KeyA'] && cubePlayer.position.x > -4.5 || keys['ArrowLeft'] && cubePlayer.position.x > -4.5) cubePlayer.position.x -= 0.5        
         if (keys['KeyD'] && cubePlayer.position.x < 4.5 || keys['ArrowRight'] && cubePlayer.position.x < 4.5) cubePlayer.position.x += 0.5
     }
