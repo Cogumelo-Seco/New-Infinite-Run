@@ -1,6 +1,4 @@
-import data from '../../data.js';
-
-module.exports = (Game, Listener, materials, stateListener, state, router) => {
+module.exports = (Game, Listener, materials, stateListener, state, data, router) => {
     const player = Game.state.player
 
     const lifeBar = document.getElementById('lifeBar2')

@@ -1,4 +1,4 @@
-module.exports = (Game, Listener, materials, stateListener, state) => {
+module.exports = (Game, Listener, materials, stateListener, state, data) => {
     const scene = state.scene
     const cubePlayer = state.player.cubePlayer
 
@@ -12,7 +12,7 @@ module.exports = (Game, Listener, materials, stateListener, state) => {
             Game.playerCollisionWithCube(cube, Game, i)
         }
 
-        if (cube.cube.position.z > 5) {
+        if (cube.cube.position.z > 10) {
             scene.remove(selectedObject);
             state.cubes.splice(i, 1)
         }        
@@ -20,6 +20,6 @@ module.exports = (Game, Listener, materials, stateListener, state) => {
 
     if (+new Date()-state.lastCubeTime > state.cubeBirthSpeed) {
         state.lastCubeTime = +new Date()
-        Game.addCube()
+        Game.addCube(data)
     }
 }

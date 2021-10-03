@@ -1,4 +1,4 @@
-module.exports = (Game, Listener, materials, stateListener, state) => {
+module.exports = (Game, Listener, materials, stateListener, state, data) => {
     const camera = state.camera
     const keys = stateListener.keys
     const player = state.player
@@ -18,6 +18,6 @@ module.exports = (Game, Listener, materials, stateListener, state) => {
     }
 
     camera.position.x = cubePlayer.position.x
-    camera.position.y = cubePlayer.position.y+4
+    camera.position.y = cubePlayer.position.y+3.5
     camera.position.z = cubePlayer.position.z+5
 }

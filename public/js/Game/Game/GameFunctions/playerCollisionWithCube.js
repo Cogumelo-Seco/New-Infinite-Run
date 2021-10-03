@@ -7,7 +7,7 @@ module.exports = (cube, game, cubeCount) => {
         case 'special':
             scene.remove(selectedObject);
             state.cubes.splice(cubeCount, 1)
-            state.player.score += 50
+            state.player.score += 100
             if (state.player.life < 100) state.player.life += 10
             game.playSoundEffect('specialCube')
             break

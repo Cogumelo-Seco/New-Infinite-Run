@@ -1,12 +1,12 @@
 import * as THREE from 'three';
 
-module.exports = (command, state, materials, scene) => {
+module.exports = (data, state, materials, scene) => {
     let X = (Math.random()*10)-5;
     let Y = 0
-    let Z = -90
-    const typePercent = Math.floor(Math.random()*100);
+    let Z = -150
+    const typePercent = Math.random()*100
     let type = 'small' 
-    if (typePercent >= 60) type = 'big'
+    if (typePercent >= 40) type = 'big'
     if (typePercent >= 95) type = 'special'
 
     let cube = null
@@ -14,25 +14,33 @@ module.exports = (command, state, materials, scene) => {
     switch(type) {
         case 'small':
             var BoxGeometry = new THREE.BoxGeometry(1, 1)
-            cube = new THREE.Mesh(BoxGeometry, materials.green)
+            if (data.graphic > 0) cube = new THREE.Mesh(BoxGeometry, materials.smallCube)
+            else cube = new THREE.Mesh(BoxGeometry, materials.smallCubeLow)
             cube.position.x = X
             cube.position.y = Y-0.5
             cube.position.z = Z
             break
         case 'big':
-            var BoxGeometry = new THREE.BoxGeometry(1.7, 4, 1.7)
-            cube = new THREE.Mesh(BoxGeometry, materials.purple)
+            var BoxGeometry = new THREE.BoxGeometry(1.7, 2.5, 1.7)
+            if (data.graphic > 0) cube = new THREE.Mesh(BoxGeometry, materials.bigCube)
+            else cube = new THREE.Mesh(BoxGeometry, materials.bigCubeLow)
             cube.position.x = X
-            cube.position.y = Y-0.5
+            cube.position.y = Y
             cube.position.z = Z
             break
         case 'special':
             var BoxGeometry = new THREE.BoxGeometry(0.85, 0.85, 0.85)
-            cube = new THREE.Mesh(BoxGeometry, materials.gold)
+            if (data.graphic > 0) cube = new THREE.Mesh(BoxGeometry, materials.specialCube)
+            else cube = new THREE.Mesh(BoxGeometry, materials.specialCubeLow)
             cube.position.x = X
             cube.position.y = Y-0.6
             cube.position.z = Z
             break
+    }
+
+    if (data.shadow) {
+        cube.castShadow = true
+        cube.receiveShadow = false
     }
 
     cube.name = Math.random().toString(36).substring(2)

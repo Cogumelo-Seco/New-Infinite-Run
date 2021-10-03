@@ -14,46 +14,41 @@ section {
     height: 100%;
 }
 
-/* Tela de pause */
+/* pause */
 
-section div#pauseScreen {
+section div#pauseObfuscation {
     display: none;
     position: absolute;
-    transform: translateX(-50%) translateY(50%);
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.501);
+}
+
+section div#pauseObfuscation h1#pauseText {
+    position: absolute;
     left: 50%;
-    bottom: 50%;
-    width: 50%;
-    height: 70%;
-    background-color: rgba(0, 0, 0, 0.404);
-    border: solid black 2px;
-    border-radius: 10px;
-}
-
-section div#pauseScreen h1 {
-    font-size: 80px;
-    margin: 10px auto;
-}
-
-section div#pauseScreen p {    
-    width: 90%;
-    height: 50px;
-    margin: 15px auto;
-    border-radius: 10px;
-    line-height: 50px;
-    font-size: 20px;
-    cursor: pointer;
-    background-color: rgba(151, 151, 151, 0.336);
-    border: solid black 2px;
-    transition: all 0.5s;
-}
-
-section div#pauseScreen p:hover {
-    font-size: 21px;
-    background-color: rgba(191, 191, 191, 0.336);
-    transform: translateY(2px);
+    top: 50%;
+    font-size: 50px;
+    transform: translateX(-50%) translateY(-50%);
 }
 
 /* Informações na tela */
+
+section div#couter {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    font-size: 50px;
+    width: 50px;
+    height: 50px;
+    transform: translateX(-50%) translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.404);
+    border: solid black 2px;
+    border-radius: 5px;
+    animation: counter 1s ease infinite;
+}
 
 section div#lifeBar {
     position: absolute;

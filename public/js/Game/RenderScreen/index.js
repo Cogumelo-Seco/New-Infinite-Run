@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-module.exports = function RenderScreen(Game, Listener, materials, router) {    
+module.exports = function RenderScreen(Game, Listener, materials, router, data) {    
     const stateListener = Listener.state
     const state = Game.state
     const renderer = state.renderer
@@ -13,10 +13,10 @@ module.exports = function RenderScreen(Game, Listener, materials, router) {
     state.renderer.setSize(window.innerWidth, window.innerHeight)
 
     if (!stateListener.paused && !state.player.dead) {
-        require('./RenderCubes')(Game, Listener, materials, stateListener, state)
-        require('./RenderPlayer')(Game, Listener, materials, stateListener, state)
-        require('./RenderInformationTexts')(Game, Listener, materials, stateListener, state)
-        require('./RenderLifeBar')(Game, Listener, materials, stateListener, state, router) 
+        require('./RenderCubes')(Game, Listener, materials, stateListener, state, data)
+        require('./RenderPlayer')(Game, Listener, materials, stateListener, state, data)
+        require('./RenderInformationTexts')(Game, Listener, materials, stateListener, state, data)
+        require('./RenderLifeBar')(Game, Listener, materials, stateListener, state, data, router) 
     }   
     
     renderer.render(state.scene, camera);
@@ -24,6 +24,6 @@ module.exports = function RenderScreen(Game, Listener, materials, router) {
     let rAF = window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.requestAnimationFrame;
 
     rAF(() => {
-        RenderScreen(Game, Listener, materials, router)
+        RenderScreen(Game, Listener, materials, router, data)
     })
 }

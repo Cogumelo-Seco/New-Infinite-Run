@@ -6,6 +6,7 @@ import * as THREE from 'three';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import Head from "next/head";
+import data from '../public/js/data.js'
 
 const Game = (props) => {
     const router = useRouter()
@@ -13,31 +14,15 @@ const Game = (props) => {
     useEffect(() => {
         let scene = new THREE.Scene()
         let camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000)
+        camera.lookAt(0, 0, 0);
         let renderer = new THREE.WebGLRenderer()
+        renderer.shadowMap.enabled = true;
 
         const Materials = materials()
         const Listener = createListener()
-        const Game = createGame(scene, camera, renderer, Materials, Listener)
+        const Game = createGame(scene, camera, renderer, Materials, Listener, data)
         Game.run()
-        startRender(Game, Listener, Materials, router)
-
-        let buttonSong = new Audio('/songs/coin.mp3')
-        buttonSong.playbackRate = 15
-
-        const comeBackHome = document.getElementById('comeBackHome')
-        comeBackHome.addEventListener('click', () => {
-            document.getElementById('game').innerHTML = ''
-            router.push('/')
-        })
-        comeBackHome.addEventListener('mouseover', () => buttonSong.play())
-
-        const restartGame = document.getElementById('resumeGame')
-        restartGame.addEventListener('click', () => {
-            document.body.style.cursor = 'none'
-            document.getElementById('pauseScreen').style.display = 'none'
-            Listener.state.paused = false
-        })
-        restartGame.addEventListener('mouseover', () => buttonSong.play())
+        startRender(Game, Listener, Materials, router, data)
     }, [])
 
     return (
@@ -61,11 +46,11 @@ const Game = (props) => {
                         <p id="lifePercentText">100%</p>
                     </div>
 
-                    <div id="pauseScreen">
-                        <h1>Pause</h1>
-                        <p id="resumeGame">Voltar ao jogo</p>
-                        <p id="comeBackHome">Voltar ao menu</p>
-                    </div>
+                    <div id="couter">1</div>
+
+                    <div id="pauseObfuscation">
+                        <h1 id="pauseText">Pause</h1>
+                    </div>               
 
                     <div id="playerScore">Score: ?</div>
 

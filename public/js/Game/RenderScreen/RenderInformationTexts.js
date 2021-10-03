@@ -1,4 +1,4 @@
-module.exports = (Game, Listener, materials, stateListener, state) => {
+module.exports = (Game, Listener, materials, stateListener, state, data) => {
     const fpsDisplay = document.getElementById('fpsDisplay');
     if (+new Date()-Game.state.fps.split('-')[1] > 1000) {
         fpsDisplay.innerText = `${Game.state.fps.split('-')[0]}FPS`

@@ -1,21 +1,13 @@
-@keyframes openChat {
-    from {
-        transform: translateY(-100%);
-        opacity: 0;
-    } 
-    to {
-        transform: translateY(0);
-        opacity: 1;
+@keyframes counter {
+    0% {
+        font-size: 50px;
     }
-}
-
-@keyframes openScoreTable {
-    from {
-        transform: translateY(-100%);
-        opacity: 0;
-    } 
-    to {
-        transform: translateY(0);
-        opacity: 1;
+    50% {
+        font-size: 55px;
+        width: 55px;
+        height: 55px;
+    }
+    100% {
+        font-size: 50px;
     }
 }

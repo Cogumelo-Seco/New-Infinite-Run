@@ -7,6 +7,8 @@ const Game = (props) => {
     const router = useRouter()
 
     useEffect(() => {
+        document.body.style.cursor = 'default'
+        
         if (!data.score) router.push('/game')
         let buttonSong = new Audio('/songs/coin.mp3')
         buttonSong.playbackRate = 15
