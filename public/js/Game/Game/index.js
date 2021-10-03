@@ -46,7 +46,7 @@ module.exports = (scene, camera, renderer, materials, Listener, data) => {
         camera.rotation.x = -1.5
         setInterval(() => {
             const couter = document.getElementById('couter')
-            if (Number(couter.innerText) < 3) couter.innerText = Number(couter.innerText)+1
+            if (Number(couter.innerText) > 0) couter.innerText = Number(couter.innerText)-1
             else if (camera.rotation.x == -1.5) {
                 camera.rotation.x = -0.48
                 couter.style.display = 'none'

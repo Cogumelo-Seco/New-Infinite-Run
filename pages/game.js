@@ -46,7 +46,7 @@ const Game = (props) => {
                         <p id="lifePercentText">100%</p>
                     </div>
 
-                    <div id="couter">1</div>
+                    <div id="couter">3</div>
 
                     <div id="pauseObfuscation">
                         <h1 id="pauseText">Pause</h1>
