@@ -1,9 +1,9 @@
 import * as THREE from 'three';
 
 module.exports = (data, state, materials, scene) => {
-    let X = (Math.random()*10)-5;
+    let X = (Math.random()*9)-4.5;
     let Y = 0
-    let Z = -150
+    let Z = -700
     const typePercent = Math.random()*100
     let type = 'small' 
     if (typePercent >= 40) type = 'big'

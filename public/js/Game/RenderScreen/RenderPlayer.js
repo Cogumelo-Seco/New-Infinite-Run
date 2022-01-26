@@ -4,7 +4,9 @@ module.exports = (Game, Listener, materials, stateListener, state, data) => {
     const player = state.player
     const cubePlayer = player.cubePlayer
 
-    if (cubePlayer.position.y >= 5) player.jump = false
+    if (!state.started) return
+
+    if (cubePlayer.position.y >= 6) player.jump = false
     if (keys['Space'] && player.jump) cubePlayer.position.y++
     if (cubePlayer.position.y > 0 && !state.player.jump || !Listener.state.keys['Space'] && cubePlayer.position.y > 0 && cubePlayer.position.y <= 5) cubePlayer.position.y -= 0.5
     if (cubePlayer.position.y < 0.5) state.player.jump = true
@@ -20,4 +22,5 @@ module.exports = (Game, Listener, materials, stateListener, state, data) => {
     camera.position.x = cubePlayer.position.x
     camera.position.y = cubePlayer.position.y+3.5
     camera.position.z = cubePlayer.position.z+5
+    camera.rotation.x = -0.45
 }

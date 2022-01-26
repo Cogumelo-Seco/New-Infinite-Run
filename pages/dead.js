@@ -26,7 +26,8 @@ const Game = (props) => {
         <html lang="pt-BR">
             <Head>
                 <title>Dead</title>
-
+            </Head>
+            <head>
                 <meta charset="UTF-8" />
                 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -34,7 +35,7 @@ const Game = (props) => {
                 <link rel="stylesheet" href="/css/dead/animations.css" />
                 <link rel="stylesheet" href="/css/dead/dead.css" />
                 <link rel="stylesheet" href="/css/dead/resizable.css" />
-            </Head>
+            </head>            
             <body>
 
                 <section>

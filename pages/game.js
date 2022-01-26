@@ -13,10 +13,11 @@ const Game = (props) => {
 
     useEffect(() => {
         let scene = new THREE.Scene()
-        let camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000)
+        let camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 500000)
         camera.lookAt(0, 0, 0);
         let renderer = new THREE.WebGLRenderer()
         renderer.shadowMap.enabled = true;
+        renderer.setClearColor(0x292929, 1);
 
         const Materials = materials()
         const Listener = createListener()
@@ -29,7 +30,8 @@ const Game = (props) => {
         <html lang="pt-BR">
             <Head>
                 <title>Game</title>
-
+            </Head>
+            <head>
                 <meta charset="UTF-8" />
                 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -37,12 +39,13 @@ const Game = (props) => {
                 <link rel="stylesheet" href="/css/game/animations.css" />
                 <link rel="stylesheet" href="/css/game/game.css" />
                 <link rel="stylesheet" href="/css/game/resizable.css" />
-            </Head>
+            </head>
             <body>
                 <div id="game"></div>
                 <section>
                     <div id="lifeBar">
-                        <div id="lifeBar2" />
+                        <div id="lifeBar1" />
+                        <div id="lifeBar2" />                        
                         <p id="lifePercentText">100%</p>
                     </div>
 

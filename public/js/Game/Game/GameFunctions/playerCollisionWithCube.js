@@ -8,11 +8,13 @@ module.exports = (cube, game, cubeCount) => {
             scene.remove(selectedObject);
             state.cubes.splice(cubeCount, 1)
             state.player.score += 100
-            if (state.player.life < 100) state.player.life += 10
+            if (state.player.life+10 >= 100) state.player.life = 100
+            else state.player.life += 10
             game.playSoundEffect('specialCube')
             break
         default:
-            if (state.player.life > 0) state.player.life -= 5
+            if (state.player.life-5 <= 0) state.player.life = 0
+            else state.player.life -= 5
             game.playSoundEffect('damage')
     }
 }

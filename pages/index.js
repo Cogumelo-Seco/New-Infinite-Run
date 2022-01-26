@@ -15,7 +15,7 @@ const Game = (props) => {
         const saveButton = document.getElementById('saveButton')
         const selectGraphic = document.getElementById('selectGraphic')
         const cancelButton = document.getElementById('cancelButton')
-        const fullScreenCheckbox = document.getElementById('fullScreenCheckbox')
+        //const fullScreenCheckbox = document.getElementById('fullScreenCheckbox')
         const selectDifficulty = document.getElementById('selectDifficulty')
         const shadow = document.getElementById('shadow')
         const shadowCheckbox = document.getElementById('shadowCheckbox')
@@ -40,7 +40,7 @@ const Game = (props) => {
         else if (data.difficulty == 1) selectDifficulty.value = 'Normal'
         else selectDifficulty.value = 'Fácil'
 
-        fullScreenCheckbox.checked = data.fullScreen
+        //fullScreenCheckbox.checked = data.fullScreen
 
         saveButton.addEventListener('click', () => {
             if (selectGraphic.value == 'Alto') data.graphic = 2
@@ -53,7 +53,7 @@ const Game = (props) => {
             else data.difficulty = 0
 
             data.shadow = selectGraphic.value == 'Alto' ? shadowCheckbox.checked : false
-            data.fullScreen = fullScreenCheckbox.checked
+            //data.fullScreen = fullScreenCheckbox.checked
             options.style.display = 'none'
         })
 
@@ -76,7 +76,8 @@ const Game = (props) => {
         <html lang="pt-BR">
             <Head>
                 <title>Home</title>
-
+            </Head>
+            <head>
                 <meta charset="UTF-8" />
                 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -84,7 +85,7 @@ const Game = (props) => {
                 <link rel="stylesheet" href="/css/home/animations.css" />
                 <link rel="stylesheet" href="/css/home/home.css" />
                 <link rel="stylesheet" href="/css/home/resizable.css" />
-            </Head>
+            </head>            
             <body>
 
                 <section>
@@ -116,13 +117,7 @@ const Game = (props) => {
                                 <input type="checkbox" id="shadowCheckbox" />
                                 <span className="slider"></span>
                             </label>
-                        </p>
-                        <p>
-                            Tela cheia <label className="switch">
-                                <input type="checkbox" id="fullScreenCheckbox" />
-                                <span className="slider"></span>
-                            </label>
-                        </p>
+                        </p>                        
                         <button id="saveButton">Salvar</button>
                         <button id="cancelButton">Cancelar</button>
                     </div>
@@ -134,6 +129,13 @@ const Game = (props) => {
         </html>
     )
 }
+
+/*<p>
+    Tela cheia <label className="switch">
+        <input type="checkbox" id="fullScreenCheckbox" />
+        <span className="slider"></span>
+    </label>
+</p>*/
 
 export async function getStaticProps() {
     return {

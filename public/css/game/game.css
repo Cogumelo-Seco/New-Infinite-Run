@@ -56,9 +56,20 @@ section div#lifeBar {
     left: 5px;
     height: 30px;
     width: 200px;
-    background-color: red;
+    background-color: rgb(155, 155, 155);
     border: solid black 2px;
     border-radius: 5px;
+}
+
+section div#lifeBar div#lifeBar1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: red;
+    border-radius: 3px;
+    transition: all 0.9s ease-out;
 }
 
 section div#lifeBar div#lifeBar2 {
@@ -69,7 +80,7 @@ section div#lifeBar div#lifeBar2 {
     width: 100%;
     background-color: rgb(0, 223, 0);
     border-radius: 3px;
-    transition: all 0.5s;
+    transition: all 0.3s linear;
 }
 
 section div#lifeBar p#lifePercentText {

@@ -14,6 +14,6 @@ module.exports = () => {
         asphaltLow: new THREE.MeshBasicMaterial({ color: 0x292929 }),
         sidewalk: new THREE.MeshPhongMaterial({ color: 0x6D6D6D, emissive: 0x6D6D6D }),
         sidewalkLow: new THREE.MeshBasicMaterial({ color: 0x6D6D6D }),
-        sand: new THREE.MeshBasicMaterial({ color: 0xFFE995 }),
+        //sand: new THREE.MeshBasicMaterial({ color: 0xFFE995 }),
     }
 }
