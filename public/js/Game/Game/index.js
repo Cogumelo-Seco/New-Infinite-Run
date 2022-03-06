@@ -59,8 +59,8 @@ module.exports = function Game(scene, camera, renderer, composer, materials, Lis
             if (!Listener.state.paused && state.started) {
                 state.time++
                 state.player.score += 10
-                if (state.player.life+0.3 >= 100) state.player.life = 100
-                else state.player.life += 0.3
+                if (state.player.life+0.5 >= 100) state.player.life = 100
+                else state.player.life += 0.5
 
                 switch(cookie.difficulty) {
                     case 0:
