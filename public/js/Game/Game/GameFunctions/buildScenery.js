@@ -1,18 +1,34 @@
 import * as THREE from 'three';
 
-module.exports = (data, state, materials, scene) => {
-    const light = new THREE.PointLight(0xB5A672, 3);
-    light.castShadow = true
-    light.shadow.camera.near = 0.5;
-    light.shadow.camera.far = 500;
-    light.position.x = 50
-    light.position.y = 90
-    light.position.z = -195
-    light.shadow.mapSize.width = 2600
-    light.shadow.mapSize.height = 2600
-    //light.shadowMapWidth = 2600; // default is 512
-    //light.shadowMapHeight = 2600; // default is 512
-    scene.add(light);
+module.exports = (data, state, materials, scene, cookie) => {
+    if (cookie.performanceMode == 'false') {
+        var hemiLight = new THREE.HemisphereLight(0xB5A672, 0xB5A672, 0.5);
+        hemiLight.position.set(20, 500, -100);
+        scene.add(hemiLight);
+
+        const light = new THREE.DirectionalLight(0xB5A672, 2, 100);
+        light.position.set(20, 50, -100)
+        light.target.position.set(0, 0, -60)
+        //const light = new THREE.PointLight(0xB5A672, 2);
+        light.castShadow = true
+
+        light.shadow.camera.left = -50;
+        light.shadow.camera.right = 50;
+        light.shadow.camera.top = 50;
+        light.shadow.camera.bottom = -50;
+        switch(cookie.shadowQuality) {
+            case 2:
+                light.shadow.mapSize.width = 1024
+                light.shadow.mapSize.height = 1024
+                break
+            case 3:
+                light.shadow.mapSize.width = 2500
+                light.shadow.mapSize.height = 2500
+            break
+        }
+        scene.add(light);
+        scene.add(light.target);
+    }
 
     const geometryAsphalt = new THREE.PlaneGeometry(10, 700)
     const BoxGeometrySidewalk = new THREE.BoxGeometry(2, 0.6, 700)
@@ -21,25 +37,22 @@ module.exports = (data, state, materials, scene) => {
     let sand = new THREE.Mesh(geometrySand, materials.sand)
     sand.position.z = -40
     sand.position.y = -1*/
+    
+    let asphalt = new THREE.Mesh(geometryAsphalt, materials.asphalt)
+    let sidewalk1 = new THREE.Mesh(BoxGeometrySidewalk, materials.sidewalk)
+    let sidewalk2 = new THREE.Mesh(BoxGeometrySidewalk, materials.sidewalk)
 
-    let asphalt = new THREE.Mesh(geometryAsphalt, materials.asphaltLow)
-    let sidewalk1 = new THREE.Mesh(BoxGeometrySidewalk, materials.sidewalkLow)
-    let sidewalk2 = new THREE.Mesh(BoxGeometrySidewalk, materials.sidewalkLow)
-
-    switch(data.graphic) {
-        case 2:
-            asphalt = new THREE.Mesh(geometryAsphalt, materials.asphalt)
-            sidewalk1 = new THREE.Mesh(BoxGeometrySidewalk, materials.sidewalk)
-            sidewalk2 = new THREE.Mesh(BoxGeometrySidewalk, materials.sidewalk)
-            break
+    if (cookie.performanceMode == 'true') {
+        asphalt = new THREE.Mesh(geometryAsphalt, materials.asphaltLow)
+        sidewalk1 = new THREE.Mesh(BoxGeometrySidewalk, materials.sidewalkLow)
+        sidewalk2 = new THREE.Mesh(BoxGeometrySidewalk, materials.sidewalkLow)
     }
-    if (data.shadow) {
-        asphalt.receiveShadow = true;
-        sidewalk1.receiveShadow = true;
-        sidewalk2.receiveShadow = true;
-    }
+    
+    asphalt.receiveShadow = true;
+    sidewalk1.receiveShadow = true;
+    sidewalk2.receiveShadow = true;
 
-   /* sand.position.z = -330
+    /*sand.position.z = -330
     sand.rotation.x = -Math.PI/2
     sand.position.y = -0.89*/
     
@@ -59,4 +72,6 @@ module.exports = (data, state, materials, scene) => {
     scene.add(sidewalk1)
     scene.add(asphalt)
     scene.add(sidewalk2)
+
+    state.buildScenery = false
 }

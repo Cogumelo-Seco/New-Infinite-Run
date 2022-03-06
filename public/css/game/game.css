@@ -1,4 +1,5 @@
 body {
+    overflow: hidden;
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
     margin: 0;
@@ -14,43 +15,21 @@ section {
     height: 100%;
 }
 
-/* pause */
-
-section div#pauseObfuscation {
-    display: none;
-    position: absolute;
+canvas#canvas {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    image-rendering: -moz-crisp-edges;
+    position: fixed;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.501);
 }
 
-section div#pauseObfuscation h1#pauseText {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    font-size: 50px;
-    transform: translateX(-50%) translateY(-50%);
-}
+/* Barra de vida */
 
-/* Informações na tela */
-
-section div#couter {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    font-size: 50px;
-    width: 50px;
-    height: 50px;
-    transform: translateX(-50%) translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.404);
-    border: solid black 2px;
-    border-radius: 5px;
-    animation: counter 1s ease infinite;
-}
-
-section div#lifeBar {
+div#lifeBar {
+    display: none;
     position: absolute;
     top: 5px;
     left: 5px;
@@ -61,7 +40,7 @@ section div#lifeBar {
     border-radius: 5px;
 }
 
-section div#lifeBar div#lifeBar1 {
+div#lifeBar div#lifeBar1 {
     position: absolute;
     top: 0;
     left: 0;
@@ -72,7 +51,7 @@ section div#lifeBar div#lifeBar1 {
     transition: all 0.9s ease-out;
 }
 
-section div#lifeBar div#lifeBar2 {
+div#lifeBar div#lifeBar2 {
     position: absolute;
     top: 0;
     left: 0;
@@ -83,32 +62,76 @@ section div#lifeBar div#lifeBar2 {
     transition: all 0.3s linear;
 }
 
-section div#lifeBar p#lifePercentText {
+div#lifeBar p#lifePercentText {
     color: black;
     transform: translateY(-50%);
 }
 
-section div#playerScore {
+/* Opções */
+
+div#options {
+    display: none;
     position: absolute;
-    bottom: 5px;
-    left: 5px;
-    background-color: rgba(0, 0, 0, 0.404);
+    transform: translateX(-50%) translateY(-50%);
+    left: 50%;
+    top: 50%;
+    width: 50%;
+    font-size: 20px;
+    text-align: left;
+    background-color: rgb(90, 90, 90);
     border: solid black 2px;
-    border-radius: 5px;
-    padding: 4px;
+    border-radius: 8px;
 }
 
-section div#fpsDisplay {
+table {
+    position: relative;
+    width: 100%;
+}
+
+th {
+    text-align: center;
+    border: solid black 2px;
+    vertical-align: middle;
+    height: 30px;
+    width: 50%;
+}
+
+div#options button {
     position: absolute;
-    bottom: 5px;
+    padding: 5px;
+    bottom: -35px;
+    color: black;
+    background-color: rgb(238, 238, 238);
+    border: solid black 2px;
+    border-radius: 8px;
+    transition: all 0.5s;
+}
+
+div#options button:hover {
+    background-color: rgb(200, 200, 200);
+}
+
+div#options button#saveButton {
     right: 5px;
-    background-color: rgba(0, 0, 0, 0.404);
-    border: solid black 2px;
-    border-radius: 5px;
-    padding: 4px;
 }
 
-#gameElement {
-    position: absolute;
-    top: 0;
+div#options button#cancelButton {
+    right: 65px;
+}
+
+div#options select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: rgb(215, 215, 215);
+    border: none;
+    outline: none;
+    text-align: center;
+    border-radius: 4px;
+    padding: 3px;
+    transition: all 0.5s;
+}
+
+div#options select option {
+    font-weight: bold;
 }

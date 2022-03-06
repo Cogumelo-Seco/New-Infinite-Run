@@ -1,12 +1,10 @@
-module.exports = (type) => {
-    switch(type) {
-        case 'specialCube':
-            var song = new Audio('/songs/special.mp3');
-            song.play()
-            break
-        case 'damage':
-            var song = new Audio('/songs/damage.mp3');
-            song.play()
-            break
-    }
+module.exports = (type, command, state) => {
+    let sound = state.sounds[type]
+    if (!sound) return
+
+    sound.currentTime = 0
+    sound.loop = command?.loop ? true : false
+    sound.volume = Number(command?.volume) || 1
+    sound.playbackRate = Number(command?.playbackRate) || 1
+    sound.play()
 }

@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-module.exports = (data, state, materials, scene) => {
+module.exports = (cookie, state, materials, scene) => {
     let X = (Math.random()*9)-4.5;
     let Y = 0
     let Z = -700
@@ -14,7 +14,7 @@ module.exports = (data, state, materials, scene) => {
     switch(type) {
         case 'small':
             var BoxGeometry = new THREE.BoxGeometry(1, 1)
-            if (data.graphic > 0) cube = new THREE.Mesh(BoxGeometry, materials.smallCube)
+            if (cookie.performanceMode == 'false') cube = new THREE.Mesh(BoxGeometry, materials.smallCube)
             else cube = new THREE.Mesh(BoxGeometry, materials.smallCubeLow)
             cube.position.x = X
             cube.position.y = Y-0.5
@@ -22,7 +22,7 @@ module.exports = (data, state, materials, scene) => {
             break
         case 'big':
             var BoxGeometry = new THREE.BoxGeometry(1.7, 2.5, 1.7)
-            if (data.graphic > 0) cube = new THREE.Mesh(BoxGeometry, materials.bigCube)
+            if (cookie.performanceMode == 'false') cube = new THREE.Mesh(BoxGeometry, materials.bigCube)
             else cube = new THREE.Mesh(BoxGeometry, materials.bigCubeLow)
             cube.position.x = X
             cube.position.y = Y
@@ -30,7 +30,7 @@ module.exports = (data, state, materials, scene) => {
             break
         case 'special':
             var BoxGeometry = new THREE.BoxGeometry(0.85, 0.85, 0.85)
-            if (data.graphic > 0) cube = new THREE.Mesh(BoxGeometry, materials.specialCube)
+            if (cookie.performanceMode == 'false') cube = new THREE.Mesh(BoxGeometry, materials.specialCube)
             else cube = new THREE.Mesh(BoxGeometry, materials.specialCubeLow)
             cube.position.x = X
             cube.position.y = Y-0.6
@@ -38,10 +38,8 @@ module.exports = (data, state, materials, scene) => {
             break
     }
 
-    if (data.shadow) {
-        cube.castShadow = true
-        cube.receiveShadow = false
-    }
+    cube.castShadow = true
+    cube.receiveShadow = false
 
     cube.name = Math.random().toString(36).substring(2)
 
