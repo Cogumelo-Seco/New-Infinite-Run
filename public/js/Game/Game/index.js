@@ -63,25 +63,25 @@ module.exports = function Game(scene, camera, renderer, composer, materials, Lis
                 else state.player.life += 0.5
 
                 switch(cookie.difficulty) {
-                    case 0:
+                    case 1:
                         if (state.cubeBirthSpeed < 200) state.cubeBirthSpeed = 200
                         else state.cubeBirthSpeed -= 2
                         break
-                    case 1:
+                    case 2:
                         if (state.cubeBirthSpeed < 150) state.cubeBirthSpeed = 150
                         else state.cubeBirthSpeed -= 9
                         break
-                    case 2:
+                    case 3:
                         if (state.cubeBirthSpeed < 100) state.cubeBirthSpeed = 100
                         else state.cubeBirthSpeed -= 15
                         break
-                    case 3:
+                    case 4:
                         if (state.cubeBirthSpeed <= 0) state.cubeBirthSpeed = 0
                         else state.cubeBirthSpeed -= 30
                         break
                 }
 
-                if (state.cubeBirthSpeed <= 160 && cookie.difficulty == 3) state.cubeSpeed = 0.5
+                if (state.cubeBirthSpeed <= 160 && cookie.difficulty == 4) state.cubeSpeed = 0.5
                 else state.cubeSpeed = state.cubeBirthSpeed/(state.cubeBirthSpeed/2)
                 /*if (state.cubeBirthSpeed < 900) state.cubeSpeed = 1.25
                 if (state.cubeBirthSpeed < 800) state.cubeSpeed = 1.5
