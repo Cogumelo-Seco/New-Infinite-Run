@@ -2,13 +2,31 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { FXAAShader } from 'three/addons/shaders/FXAAShader.js';
-import { CopyShader } from 'three/addons/shaders/CopyShader.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
-import { settings } from 'nprogress';
+import { VignetteShader } from 'three/addons/shaders/VignetteShader.js';
+
+import { FocusShader } from 'three/addons/shaders/FocusShader.js';
+import { FilmShader } from 'three/addons/shaders/FilmShader.js';
+import { RGBShiftShader } from 'three/addons/shaders/RGBShiftShader.js';
+import { TechnicolorShader } from 'three/addons/shaders/TechnicolorShader.js';
+import { HorizontalBlurShader } from 'three/addons/shaders/HorizontalBlurShader.js';
+import { HorizontalTiltShiftShader } from 'three/addons/shaders/HorizontalTiltShiftShader.js';
+import { VerticalBlurShader } from 'three/addons/shaders/VerticalBlurShader.js';
+import { VerticalTiltShiftShader } from 'three/addons/shaders/VerticalTiltShiftShader.js';
+import { ColorifyShader } from 'three/addons/shaders/ColorifyShader.js';
+import { ColorCorrectionShader } from 'three/addons/shaders/ColorCorrectionShader.js';
+import { BleachBypassShader } from 'three/addons/shaders/BleachBypassShader.js';
+import { GammaCorrectionShader } from 'three/addons/shaders/GammaCorrectionShader.js';
+import { MirrorShader } from 'three/addons/shaders/MirrorShader.js';
+import { SepiaShader } from 'three/addons/shaders/SepiaShader.js';
+import { TriangleBlurShader } from 'three/addons/shaders/TriangleBlurShader.js';
 
 function createGame(Listener, canvas, THREE) {
+    let shaderTest = VignetteShader
+
+    
     const state = {
-        debug: false,
+        debug: true,
         fps: '0-0',
         gameStage: 'menu',
         firstLoading: true,
@@ -38,6 +56,7 @@ function createGame(Listener, canvas, THREE) {
             renderingQualityValue: 2,
             shadowQuality: 3,
             textureQuality: 1,
+            shaders: 0,
             VSync: false
         },
         difficultyTex: {
@@ -61,6 +80,22 @@ function createGame(Listener, canvas, THREE) {
         lastPoleTime: +new Date(),
         playerFPSControl: 0,
         cubesFPSControl: 0,
+        Shaders: {
+            FocusShader,
+            FilmShader,
+            RGBShiftShader,
+            BleachBypassShader,
+            TechnicolorShader,
+            HorizontalBlurShader,
+            HorizontalTiltShiftShader,
+            VerticalBlurShader,
+            VerticalTiltShiftShader,
+            ColorifyShader,
+            ColorCorrectionShader,
+            GammaCorrectionShader,
+            MirrorShader,
+            SepiaShader
+        }
     }
 
     const addSounds = (command) => require('./GameFunctions/addSounds').default(state)
@@ -75,7 +110,7 @@ function createGame(Listener, canvas, THREE) {
     state.playSong = playSong
     state.canvas = canvas
 
-    async function changeSettings({ shadowQuality, renderingQuality, difficulty }) {
+    async function changeSettings({ shadowQuality, renderingQuality, difficulty, shaders }) {
         let scene = state.scene
 
         if (!isNaN(difficulty) && difficulty != state.settings.difficulty && state.gameStage == 'menu') {
@@ -96,6 +131,21 @@ function createGame(Listener, canvas, THREE) {
             }
         } else if (!isNaN(difficulty) && difficulty != state.settings.difficulty && state.gameStage != 'menu') {
             alert('A dificuldade só pode ser mudada no menu principal.')
+        }
+
+        console.log(shaders)
+        if (!isNaN(shaders) && shaders != state.settings.shaders) {
+            let currentShadersPass = state.settings.shadersPass//state.Shaders[Object.keys(state.Shaders)[state.settings.shaders-1]]
+            if (currentShadersPass) state.composer.removePass(currentShadersPass)
+
+            state.settings.shaders = shaders
+            let newShaders = state.Shaders[Object.keys(state.Shaders)[state.settings.shaders-1]]
+
+            if (newShaders) {
+                let newShadersPass = new ShaderPass(newShaders)
+                state.composer.addPass(newShadersPass)
+                state.settings.shadersPass = newShadersPass
+            }
         }
 
         if (!isNaN(renderingQuality) && renderingQuality != state.settings.renderingQuality) {
@@ -174,6 +224,7 @@ function createGame(Listener, canvas, THREE) {
             renderingQualityValue: 0.75,
             shadowQuality: 0,
             textureQuality: 0,
+            shaders: 0,
             VSync: true
         }
 
@@ -203,6 +254,7 @@ function createGame(Listener, canvas, THREE) {
 
         //
 
+        const VignettePass = new ShaderPass(VignetteShader);
         const fxaaPass = new ShaderPass(FXAAShader);
         const outputPass = new OutputPass();
         const pixelRatio = renderer.getPixelRatio();
@@ -215,7 +267,10 @@ function createGame(Listener, canvas, THREE) {
         composer.addPass(renderPass);
         composer.addPass(outputPass);
 
-        if (!lowMode) composer.addPass(fxaaPass)
+        if (!lowMode) {
+            composer.addPass(fxaaPass)
+            composer.addPass(VignettePass)
+        }
 
         await buildScenery({ THREE, scene, lowMode })
 
@@ -247,8 +302,6 @@ function createGame(Listener, canvas, THREE) {
                 Play: () => {
                     state.paused = false
                     state.gameStage = 'game'
-
-                    for (let i in state.poles) state.poles[i].speed = Math.min(2, (Math.max(state.difficultyMultiplier, 0.4)*1.5))
                 },
                 Opções: openSettings,
             },
@@ -385,7 +438,6 @@ function createGame(Listener, canvas, THREE) {
 
                     if (state.difficultyMultiplier > maxDifficulty) state.difficultyMultiplier = state.difficultyMultiplier-(difficulty/1000)
                     else state.difficultyMultiplier = maxDifficulty
-                    //state.difficultyMultiplier = 0.3
                 }
             }
 
@@ -402,7 +454,7 @@ function createGame(Listener, canvas, THREE) {
                     }
                 }
 
-                if (+new Date()-state.lastPoleTime > 2000) {
+                if (+new Date()-state.lastPoleTime > 2000*(3-Math.min(2, (Math.max(state.difficultyMultiplier, 0.4)*1.5)))) {
                     state.lastPoleTime = +new Date()
                     await addPole()
                 }

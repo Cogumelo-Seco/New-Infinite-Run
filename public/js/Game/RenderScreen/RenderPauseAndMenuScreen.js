@@ -203,6 +203,27 @@ export default async (ctx, canvas, game, Listener, functions) => {
 
             //
 
+            let shadersOption = document.getElementById('shadersOption') || document.createElement('tr')
+            shadersOption.id = 'shadersOption'
+
+            let shadersOptionText = document.getElementById('shadersOptionText') || document.createElement('th')
+            shadersOptionText.id = 'shadersOptionText'
+            shadersOptionText.innerText = 'Shaders'
+
+            let shadersOptionButton = document.getElementById('shadersOptionButton') || document.createElement('th')
+            shadersOptionButton.id = 'shadersOptionButton'
+            let shadersOptionSelect = document.getElementById('shadersOptionSelect') || document.createElement('select')
+            shadersOptionSelect.id = 'shadersOptionSelect'
+            shadersOptionSelect.innerHTML = `
+                <option value="0">Sem</option>
+            `
+            for (let i in Object.keys(game.state.Shaders)) shadersOptionSelect.innerHTML += `<option value="${Number(i)+1}">${Object.keys(game.state.Shaders)[i]}</option>`
+            shadersOptionButton.appendChild(shadersOptionSelect)
+            shadersOption.appendChild(shadersOptionText)
+            shadersOption.appendChild(shadersOptionButton)
+
+            //
+
             let VSyncOption = document.getElementById('VSyncOption') || document.createElement('tr')
             VSyncOption.id = 'VSyncOption'
 
@@ -241,7 +262,8 @@ export default async (ctx, canvas, game, Listener, functions) => {
                 game.changeSettings({
                     shadowQuality: Number(shadowOptionButtonSelect.value), 
                     renderingQuality: Number(rendererOptionButtonSelect.value),
-                    difficulty: Number(difficultyOptionButtonSelect.value)
+                    difficulty: Number(difficultyOptionButtonSelect.value),
+                    shaders: Number(shadersOptionSelect.value)
                 })
 
                 game.state.settings.textureQuality = Number(textureOptionSelect.value)
@@ -259,6 +281,7 @@ export default async (ctx, canvas, game, Listener, functions) => {
             optionScreenElement.appendChild(shadowOption)
             optionScreenElement.appendChild(rendererOption)
             optionScreenElement.appendChild(textureOption)
+            optionScreenElement.appendChild(shadersOption)
             optionScreenElement.appendChild(VSyncOption)
             menuElement.appendChild(optionScreenElement)
 

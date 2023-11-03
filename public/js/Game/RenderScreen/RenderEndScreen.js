@@ -63,7 +63,8 @@ export default async (ctx, canvas, game, Listener, functions) => {
                 game.state.paused = false
                 game.state.difficultyMultiplier = 1
                 game.state.player.score = 0
-                game.state.player.life = 100
+                game.state.player.life = game.state.player.lifeLimit
+                for (let i in game.state.poles) game.state.poles[i].speed = Math.min(2, (Math.max(game.state.difficultyMultiplier, 0.4)*1.5))
             }
             
             endMenuElement.appendChild(returnButton)
