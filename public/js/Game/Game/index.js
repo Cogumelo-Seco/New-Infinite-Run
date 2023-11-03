@@ -31,8 +31,9 @@ function createGame(Listener, canvas, THREE) {
         },
         settings: {
             difficulty: 1,
-            renderingQuality: 3,
-            shadowQuality: 4,
+            renderingQuality: 2,
+            renderingQualityValue: 2,
+            shadowQuality: 3,
             textureQuality: 1,
             VSync: false
         },
@@ -73,24 +74,26 @@ function createGame(Listener, canvas, THREE) {
     async function changeSettings({ shadowQuality, renderingQuality }) {
         let scene = state.scene
 
-        if (!isNaN(renderingQuality)) {
+        if (!isNaN(renderingQuality) && renderingQuality != state.settings.renderingQuality) {
+            state.settings.renderingQuality = renderingQuality
+
             switch (renderingQuality) {
                 case 0:
-                    state.settings.renderingQuality = 0.75
+                    state.settings.renderingQualityValue = 0.75
                     break
                 case 1:
-                    state.settings.renderingQuality = 1
+                    state.settings.renderingQualityValue = 1
                     break
                 case 2:
-                    state.settings.renderingQuality = 2
+                    state.settings.renderingQualityValue = 2
                     break
                 case 3:
-                    state.settings.renderingQuality = 4
+                    state.settings.renderingQualityValue = 4
                     break
             }
         }
 
-        if(!isNaN(shadowQuality)) {
+        if(!isNaN(shadowQuality) && shadowQuality != state.settings.shadowQuality) {
             let light = scene.getObjectByName('sunLight')
             let lightTarget = scene.getObjectByName('sunLightTarget')
 
@@ -192,6 +195,7 @@ function createGame(Listener, canvas, THREE) {
         //
 
         let openSettings = () => {
+            console.log(state.settings.renderingQuality)
             let difficultySelect = document.getElementById('difficultyOptionButtonSelect')
             let shadowButtonSelect = document.getElementById('shadowOptionButtonSelect')
             let rendererSelect = document.getElementById('rendererOptionButtonSelect')

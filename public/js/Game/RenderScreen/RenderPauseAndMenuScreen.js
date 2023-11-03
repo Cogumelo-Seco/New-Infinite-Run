@@ -242,7 +242,7 @@ export default async (ctx, canvas, game, Listener, functions) => {
                     renderingQuality: Number(rendererOptionButtonSelect.value), 
                 })
 
-                game.state.settings.difficulty = Number(difficultyOptionButtonSelect.value)
+                if (game.state.gameStage == 'menu') game.state.settings.difficulty = Number(difficultyOptionButtonSelect.value)
                 game.state.settings.textureQuality = Number(textureOptionSelect.value)
                 game.state.settings.VSync = Boolean(VSyncOptionInput.checked)
 
