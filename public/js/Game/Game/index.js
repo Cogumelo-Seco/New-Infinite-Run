@@ -342,7 +342,6 @@ function createGame(Listener, canvas, THREE) {
 
                     let difficulty = (state.settings.difficulty+1)*2
                     let maxDifficulty = difficulty == 2 ? 0.6 : difficulty == 4 ? 0.5 : difficulty == 6 ? 0.4 : 0.3
-                    console.log(state.difficultyMultiplier)
 
                     if (state.difficultyMultiplier > maxDifficulty) state.difficultyMultiplier = state.difficultyMultiplier-(difficulty/1000)
                     else state.difficultyMultiplier = maxDifficulty
@@ -405,7 +404,7 @@ function createGame(Listener, canvas, THREE) {
                     newLoad(dir)
                 })
                 sound.addEventListener('error', (e) => newLoad('[ERROR] '+dir))
-                sound.src = `/Sounds/${dir}`
+                sound.src = `/Sound/${dir}`
                 sound.preload = 'auto'
                 state.sounds[dir] = sound
             } /*else {

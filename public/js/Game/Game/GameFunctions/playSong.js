@@ -3,7 +3,7 @@ export default (type, command, state) => {
 
     if (command?.newSong) {
         song = new Audio()
-        song.src = `/Sounds/${type}`
+        song.src = `/Sound/${type}`
     } else song = state.sounds[type]
 
     if (!song) return
