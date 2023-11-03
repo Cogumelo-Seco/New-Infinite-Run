@@ -9,7 +9,7 @@ module.exports = (cookie) => {
         paused: false,
     }
 
-    require('./ListenerFunctions/addButtons')(state, cookie)
+    require('./ListenerFunctions/addButtons').default(state, cookie)
 
     document.onmousemove = (event) => {
         state.mousePosition.x = Math.floor(event.pageX/window.innerWidth*1000)
@@ -52,7 +52,18 @@ module.exports = (cookie) => {
     })
 
     function handleKeys(event) {
-        if (event.key == 'Escape' || event.key == 'p') state.paused = state.paused ? false : true
+        if (event.key == 'Escape' || event.key == 'p') state.game.state.paused = state.game.state.paused ? false : true
+
+
+        if (event.code == 'KeyP') state.game.changeSettings({ shadowQuality: 0 })
+        if (event.code == 'KeyO') state.game.changeSettings({ shadowQuality: 1 })
+        if (event.code == 'KeyI') state.game.changeSettings({ shadowQuality: 2 })
+        if (event.code == 'KeyU') state.game.changeSettings({ shadowQuality: 3 })
+
+        if (event.code == 'KeyL') state.game.changeSettings({ renderingQuality: 0 })
+        if (event.code == 'KeyK') state.game.changeSettings({ renderingQuality: 1 })
+        if (event.code == 'KeyJ') state.game.changeSettings({ renderingQuality: 2 })
+        if (event.code == 'KeyH') state.game.changeSettings({ renderingQuality: 3 })
     }
 
     return {

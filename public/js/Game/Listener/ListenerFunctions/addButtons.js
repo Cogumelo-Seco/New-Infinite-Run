@@ -1,4 +1,8 @@
-module.exports = (state, cookie) => {
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { FXAAShader } from 'three/addons/shaders/FXAAShader.js';
+import { CopyShader } from 'three/addons/shaders/CopyShader.js';
+
+export default (state, cookie) => {
     state.buttons['PlayGame'] = {
         minX: 406,
         maxX: 593,
@@ -11,16 +15,12 @@ module.exports = (state, cookie) => {
         onClick: () => {
             if (document.getElementById('options').style.display == 'block') return
 
-            const { ShaderPass } = require('three/examples/jsm/postprocessing/ShaderPass.js')
-            const { FXAAShader } = require('three/examples/jsm/shaders/FXAAShader.js')
-            const { CopyShader } = require('three/examples/jsm/shaders/CopyShader.js')
-
             const fxaaPass = new ShaderPass(FXAAShader);
             fxaaPass.material.uniforms['resolution'].value.x = 0.5 / (window.innerWidth * window.devicePixelRatio);
             fxaaPass.material.uniforms['resolution'].value.y = 0.5 / (window.innerHeight * window.devicePixelRatio);
 
             if (cookie.FXAA == 'true') state.Game.state.composer.addPass(fxaaPass);
-            else state.Game.state.composer.addPass(new ShaderPass(CopyShader));
+            //else state.Game.state.composer.addPass(new ShaderPass(CopyShader));
 
             state.Game.state.gameState = 'game'
             state.Game.run()

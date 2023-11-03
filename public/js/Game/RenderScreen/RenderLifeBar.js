@@ -10,5 +10,4 @@ module.exports = (Game, Listener, materials, cookie, router, ctx) => {
     lifeBar2.style.width = `${player.life}%`
 
     if (player.life >= 100) player.life = 100
-    
 }

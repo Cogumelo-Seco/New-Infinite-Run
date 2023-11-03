@@ -1,4 +1,4 @@
-module.exports = (object1, object2) => {
+export default (object1, object2) => {
     if (!object1 || !object2) return;
     object1.geometry.computeBoundingBox();
     object2.geometry.computeBoundingBox();
