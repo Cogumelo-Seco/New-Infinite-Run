@@ -13,11 +13,14 @@ function createGame(Listener, canvas, THREE) {
         gameStage: 'menu',
         firstLoading: true,
         paused: false,
+        cubesPercent: [ 40, 95, 97 ],
         cubes: { },
         poles: { },
         player: {
+            scoreMultiplier: 1,
             score: 0,
             life: 100,
+            lifeLimit: 100,
             distance: 0,
             v: 0,
             cubePlayer: null,
@@ -41,6 +44,7 @@ function createGame(Listener, canvas, THREE) {
             0: 'Fácil',
             1: 'Médio',
             2: 'Difícil',
+            3: 'Extremo'
         },
         menuTextList: [
             'Use espaco para pular, você tem pulo duplo',
@@ -71,8 +75,28 @@ function createGame(Listener, canvas, THREE) {
     state.playSong = playSong
     state.canvas = canvas
 
-    async function changeSettings({ shadowQuality, renderingQuality }) {
+    async function changeSettings({ shadowQuality, renderingQuality, difficulty }) {
         let scene = state.scene
+
+        if (!isNaN(difficulty) && difficulty != state.settings.difficulty && state.gameStage == 'menu') {
+            state.settings.difficulty = difficulty
+
+            switch (difficulty) {
+                case 3:
+                    state.player.lifeLimit = 50
+                    state.player.life = state.player.lifeLimit
+                    state.player.scoreMultiplier = 4
+                    state.cubesPercent = [ 35, 95, 100 ]
+                    break
+                default:
+                    state.cubesPercent = [ 40, 95, 97 ]
+                    state.player.lifeLimit = 100
+                    state.player.life = state.player.lifeLimit
+                    state.player.scoreMultiplier = 1
+            }
+        } else if (!isNaN(difficulty) && difficulty != state.settings.difficulty && state.gameStage != 'menu') {
+            alert('A dificuldade só pode ser mudada no menu principal.')
+        }
 
         if (!isNaN(renderingQuality) && renderingQuality != state.settings.renderingQuality) {
             state.settings.renderingQuality = renderingQuality
@@ -143,7 +167,16 @@ function createGame(Listener, canvas, THREE) {
         }
     }
 
-    async function start() {
+    async function start(lowMode) {
+        if (lowMode) state.settings = {
+            difficulty: 1,
+            renderingQuality: 0,
+            renderingQualityValue: 0.75,
+            shadowQuality: 0,
+            textureQuality: 0,
+            VSync: true
+        }
+
         let container = document.getElementById('container');
         container.style.width = window.innerWidth
         container.style.height = window.innerHeight
@@ -159,7 +192,7 @@ function createGame(Listener, canvas, THREE) {
         renderer.setSize(window.innerWidth, window.innerHeight);
         //renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.autoClear = false;
-        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.enabled = lowMode ? false : true;
         renderer.setClearColor(0xFFE995, 1);
         container.appendChild(renderer.domElement);
 
@@ -177,13 +210,14 @@ function createGame(Listener, canvas, THREE) {
         fxaaPass.material.uniforms['resolution'].value.x = 1 / (window.innerWidth * pixelRatio);
         fxaaPass.material.uniforms['resolution'].value.y = 1 / (window.innerHeight * pixelRatio);
 
+        
         let composer = new EffectComposer(renderer);
         composer.addPass(renderPass);
         composer.addPass(outputPass);
 
-        composer.addPass(fxaaPass)
+        if (!lowMode) composer.addPass(fxaaPass)
 
-        await buildScenery({ THREE, scene })
+        await buildScenery({ THREE, scene, lowMode })
 
         state.renderer = renderer
         state.camera = camera
@@ -213,6 +247,8 @@ function createGame(Listener, canvas, THREE) {
                 Play: () => {
                     state.paused = false
                     state.gameStage = 'game'
+
+                    for (let i in state.poles) state.poles[i].speed = Math.min(2, (Math.max(state.difficultyMultiplier, 0.4)*1.5))
                 },
                 Opções: openSettings,
             },
@@ -235,7 +271,7 @@ function createGame(Listener, canvas, THREE) {
     }
 
     async function gameLoop(command) {
-        if (state.player.life <= 0) {
+        if (state.player.life <= 0 && !state.debug) {
             state.gameStage = 'end'
             state.player.cubePlayer.x = 0
             for (let i in state.cubes) state.scene.remove(state.cubes[i].cube)
@@ -342,10 +378,10 @@ function createGame(Listener, canvas, THREE) {
                     await addCube()
                     await addCube()
 
-                    state.player.score += (Math.floor(Math.random()*10)+5)/4
+                    state.player.score += ((Math.floor(Math.random()*10)+5)/4)*state.player.scoreMultiplier
 
                     let difficulty = (state.settings.difficulty+1)*2
-                    let maxDifficulty = difficulty == 2 ? 0.6 : difficulty == 4 ? 0.5 : difficulty == 6 ? 0.4 : 0.3
+                    let maxDifficulty = difficulty == 2 ? 0.6 : difficulty == 4 ? 0.5 : difficulty == 6 ? 0.4 : difficulty == 8 ? 0.4 : 0.4
 
                     if (state.difficultyMultiplier > maxDifficulty) state.difficultyMultiplier = state.difficultyMultiplier-(difficulty/1000)
                     else state.difficultyMultiplier = maxDifficulty

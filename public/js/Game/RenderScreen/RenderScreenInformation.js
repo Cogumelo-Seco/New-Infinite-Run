@@ -38,7 +38,7 @@ export default async (ctx, canvas, game, Listener, functions) => {
     const lifeBar2 = document.getElementById('lifeBar2')
     const lifePercentText = document.getElementById('lifePercentText')
 
-    if (player.life >= 100) player.life = 100
+    if (player.life >= game.state.player.lifeLimit) player.life = game.state.player.lifeLimit
     if (player.life <= 0) player.life = 0
 
     lifePercentText.innerText = `${Number.parseInt(player.life)}%`

@@ -13,13 +13,15 @@ const Game = (props) => {
     const router = useRouter()
 
     useEffect(async() => {
+        let lowMode = confirm('Pressione *CANCELAR* se sedeja iniciar em modo desempenho.')
+
         let canvas = document.getElementById('canvas')
         let Listener = createListener();
         let game = createGame(Listener, canvas, THREE);
         Listener.state.game = game
 
         game.loading()
-        game.start()
+        game.start(!lowMode)
 
         startRender(canvas, game, Listener, THREE)
     }, [])

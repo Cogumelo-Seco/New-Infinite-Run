@@ -6,8 +6,10 @@ export default async (state, THREE) => {
     let Z = -300
     const typePercent = Math.random()*100
     let type = 'small' 
-    if (typePercent >= 40) type = 'big'
-    if (typePercent >= 97) type = 'special'
+    if (typePercent >= state.cubesPercent[0]) type = 'big'
+    if (typePercent >= state.cubesPercent[1]) type = 'wall'
+    if (typePercent >= state.cubesPercent[2]) type = 'special'
+    //let type = 'wall'
 
     let cube = null
     let cubeData = { type, scale: 1 }
@@ -31,6 +33,16 @@ export default async (state, THREE) => {
             cube.position.y = Y+1.25
             cube.position.z = Z
             cubeData.color = 270
+            break
+        case 'wall':
+            var BoxGeometry = new THREE.BoxGeometry(4, 6, 0.5)
+            //cube = new THREE.Mesh(BoxGeometry, materials.bigCube)
+            cube = new THREE.Mesh(BoxGeometry, state.settings.textureQuality == 0 ? new THREE.MeshBasicMaterial({ color: 'hsl(174, 100%, 30%)' }) : new THREE.MeshPhongMaterial({ color: 'hsl(174, 100%, 50%)', emissive: 0x000000 }))
+            
+            cube.position.x = X
+            cube.position.y = Y+(5/2)
+            cube.position.z = Z
+            cubeData.color = 174
             break
         case 'special':
             var BoxGeometry = new THREE.BoxGeometry(0.20, 0.85, 0.85)

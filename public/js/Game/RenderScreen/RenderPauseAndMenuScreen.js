@@ -123,6 +123,7 @@ export default async (ctx, canvas, game, Listener, functions) => {
                 <option value="0">Fácil</option>
                 <option value="1">Médio</option>
                 <option value="2">Difícil</option>
+                <option value="3">Extremo</option>
             `
             difficultyOptionButtonSelect.value = game.state.settings.difficulty
             difficultyOptionButton.appendChild(difficultyOptionButtonSelect)
@@ -237,12 +238,12 @@ export default async (ctx, canvas, game, Listener, functions) => {
             ApplyChangesButton.innerText = 'Aplicar Alterações'
 
             ApplyChangesButton.onclick = () => {
-                if (Number(shadowOptionButtonSelect.value) != game.state.settings.shadowQuality || Number(rendererOptionButtonSelect.value) != game.state.settings.renderingQuality) game.changeSettings({
+                game.changeSettings({
                     shadowQuality: Number(shadowOptionButtonSelect.value), 
-                    renderingQuality: Number(rendererOptionButtonSelect.value), 
+                    renderingQuality: Number(rendererOptionButtonSelect.value),
+                    difficulty: Number(difficultyOptionButtonSelect.value)
                 })
 
-                if (game.state.gameStage == 'menu') game.state.settings.difficulty = Number(difficultyOptionButtonSelect.value)
                 game.state.settings.textureQuality = Number(textureOptionSelect.value)
                 game.state.settings.VSync = Boolean(VSyncOptionInput.checked)
 
