@@ -26,7 +26,7 @@ function createGame(Listener, canvas, THREE) {
 
     
     const state = {
-        debug: true,
+        debug: false,
         fps: '0-0',
         gameStage: 'menu',
         firstLoading: true,
