@@ -1,7 +1,6 @@
 import createGame from '../public/js/Game/Game/index.js'
 import startRender from '../public/js/Game/RenderScreen/index.js'
 import createListener from '../public/js/Game/Listener/index.js'
-import materials from '../public/js/Game/materials.js'
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import cookies from 'next-cookies';
