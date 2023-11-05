@@ -9,14 +9,14 @@ export default ({ THREE, scene, lowMode }, state) => {
     light.position.set(20, 55, -100)
     light.target.position.set(0, 0, -50)
     //const light = new THREE.PointLight(0xB5A672, 2);
-    light.castShadow = true
+    light.castShadow = lowMode ? false : true
     light.shadow.camera.left = -70;
     light.shadow.camera.right = 70;
     light.shadow.camera.top = 120;
     light.shadow.camera.bottom = -70;
     
-    light.shadow.mapSize.x = 2048*8
-    light.shadow.mapSize.y = 2048*8
+    light.shadow.mapSize.x = lowMode ? 2048 : 2048*8
+    light.shadow.mapSize.y = lowMode ? 2048 : 2048*8
 
     light.name = 'sunLight'
     light.target.name = 'sunLightTarget'
