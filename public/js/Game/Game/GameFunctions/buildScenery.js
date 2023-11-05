@@ -15,8 +15,8 @@ export default ({ THREE, scene, lowMode }, state) => {
     light.shadow.camera.top = 120;
     light.shadow.camera.bottom = -70;
     
-    light.shadow.mapSize.x = lowMode ? 1000 : 2048*8
-    light.shadow.mapSize.y = lowMode ? 1000 : 2048*8
+    light.shadow.mapSize.x = 2048*8
+    light.shadow.mapSize.y = 2048*8
 
     light.name = 'sunLight'
     light.target.name = 'sunLightTarget'
@@ -27,30 +27,36 @@ export default ({ THREE, scene, lowMode }, state) => {
     // ASPHALT
 
     const geometryAsphalt = new THREE.PlaneGeometry(10, 300)
-    let asphalt = new THREE.Mesh(geometryAsphalt, lowMode ? new THREE.MeshBasicMaterial({ color: 'hsl(0, 0%, 20%)' }) : new THREE.MeshPhongMaterial({ color: 'hsl(0, 0%, 20%)', emissive: 'hsl(0, 0%, 10%)' }))
+    let asphalt = new THREE.Mesh(geometryAsphalt, lowMode ? new THREE.MeshBasicMaterial({ color: 'hsl(0, 0%, 20%)' }) : new THREE.MeshPhongMaterial({ color: 'hsl(0, 0%, 20%)', emissive: 'hsl(0, 0%, 0%)' }))
     asphalt.receiveShadow = true;
     asphalt.position.z = -150
     asphalt.position.y = 0
     asphalt.rotation.x = -Math.PI/2
     scene.add(asphalt)
+    state.sceneObjs['asphalt'] = asphalt
+    state.sceneObjs['asphalt'].COLOR = 'hsl(0, 0%, 20%)'
 
     const BoxGeometrySidewalk = new THREE.BoxGeometry(2, 0.5, 300)
 
-    let sidewalk1 = new THREE.Mesh(BoxGeometrySidewalk, lowMode ? new THREE.MeshBasicMaterial({ color: 'hsl(0, 0%, 50%)' }) : new THREE.MeshPhongMaterial({ color: 'hsl(0, 0%, 50%)', emissive: 'hsl(0, 0%, 10%)' }))
+    let sidewalk1 = new THREE.Mesh(BoxGeometrySidewalk, lowMode ? new THREE.MeshBasicMaterial({ color: 'hsl(0, 0%, 50%)' }) : new THREE.MeshPhongMaterial({ color: 'hsl(0, 0%, 50%)', emissive: 'hsl(0, 0%, 0%)' }))
     sidewalk1.receiveShadow = true;
     sidewalk1.castShadow = true
     sidewalk1.position.z = -150
     sidewalk1.position.y = 0
     sidewalk1.position.x = -6
     scene.add(sidewalk1)
+    state.sceneObjs['sidewalk1'] = sidewalk1
+    state.sceneObjs['sidewalk1'].COLOR = 'hsl(0, 0%, 50%)'
 
-    let sidewalk2 = new THREE.Mesh(BoxGeometrySidewalk, lowMode ? new THREE.MeshBasicMaterial({ color: 'hsl(0, 0%, 50%)' }) : new THREE.MeshPhongMaterial({ color: 'hsl(0, 0%, 50%)', emissive: 'hsl(0, 0%, 10%)' }))
+    let sidewalk2 = new THREE.Mesh(BoxGeometrySidewalk, lowMode ? new THREE.MeshBasicMaterial({ color: 'hsl(0, 0%, 50%)' }) : new THREE.MeshPhongMaterial({ color: 'hsl(0, 0%, 50%)', emissive: 'hsl(0, 0%, 0%)' }))
     sidewalk2.receiveShadow = true;
     sidewalk2.castShadow = true
     sidewalk2.position.z = -150
     sidewalk2.position.y = 0
     sidewalk2.position.x = 6
     scene.add(sidewalk2)
+    state.sceneObjs['sidewalk2'] = sidewalk2
+    state.sceneObjs['sidewalk2'].COLOR = 'hsl(0, 0%, 50%)'
 
     // PLAYER
 
@@ -63,6 +69,8 @@ export default ({ THREE, scene, lowMode }, state) => {
     cubePlayer.position.z = -5
     cubePlayer.position.y = 0.75
     scene.add(cubePlayer)
+    state.sceneObjs['cubePlayer'] = cubePlayer
+    state.sceneObjs['cubePlayer'].COLOR = 'hsl(115, 100%, 50%)'
     state.player.cubePlayer = cubePlayer
     state.player.zeroPointY = cubePlayer.position.y
 

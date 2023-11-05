@@ -19,12 +19,10 @@ import { BleachBypassShader } from 'three/addons/shaders/BleachBypassShader.js';
 import { GammaCorrectionShader } from 'three/addons/shaders/GammaCorrectionShader.js';
 import { MirrorShader } from 'three/addons/shaders/MirrorShader.js';
 import { SepiaShader } from 'three/addons/shaders/SepiaShader.js';
-import { TriangleBlurShader } from 'three/addons/shaders/TriangleBlurShader.js';
+import { DotScreenShader } from 'three/addons/shaders/DotScreenShader.js';
+import { GlitchPass } from 'three/addons/postprocessing/GlitchPass.js';
 
 function createGame(Listener, canvas, THREE) {
-    let shaderTest = VignetteShader
-
-    
     const state = {
         debug: false,
         fps: '0-0',
@@ -57,7 +55,10 @@ function createGame(Listener, canvas, THREE) {
             shadowQuality: 3,
             textureQuality: 1,
             shaders: 0,
-            VSync: false
+            Vignette: true,
+            FXAA: true,
+            Low: false,
+            VSync: false,
         },
         difficultyTex: {
             0: 'Fácil',
@@ -66,7 +67,7 @@ function createGame(Listener, canvas, THREE) {
             3: 'Extremo'
         },
         menuTextList: [
-            'Use espaco para pular, você tem pulo duplo',
+            'Use espaço para pular, você tem pulo duplo',
             'Use \'A D\' ou as setas direcionais para controlar o cubo',
             'Colida com os objetos amarelos para ganhar vida e pontos',
         ],
@@ -80,8 +81,10 @@ function createGame(Listener, canvas, THREE) {
         lastPoleTime: +new Date(),
         playerFPSControl: 0,
         cubesFPSControl: 0,
+        Pass: { },
         Shaders: {
             FocusShader,
+            GlitchPass,
             FilmShader,
             RGBShiftShader,
             BleachBypassShader,
@@ -94,7 +97,8 @@ function createGame(Listener, canvas, THREE) {
             ColorCorrectionShader,
             GammaCorrectionShader,
             MirrorShader,
-            SepiaShader
+            SepiaShader,
+            DotScreenShader
         }
     }
 
@@ -110,8 +114,37 @@ function createGame(Listener, canvas, THREE) {
     state.playSong = playSong
     state.canvas = canvas
 
-    async function changeSettings({ shadowQuality, renderingQuality, difficulty, shaders }) {
+    async function changeSettings({ shadowQuality, renderingQuality, difficulty, shaders, Vignette, FXAA, Low }) {
         let scene = state.scene
+
+        if (Vignette != undefined && Vignette != state.settings.Vignette) {
+            state.settings.Vignette = Vignette
+            let VignettePass = state.Pass.VignettePass
+
+            if (Vignette) state.composer.addPass(VignettePass)
+            else state.composer.removePass(VignettePass)
+        }
+
+        if (FXAA != undefined && FXAA != state.settings.FXAA) {
+            state.settings.FXAA = FXAA
+            let FXAAPass = state.Pass.FXAAPass
+
+            if (FXAA) state.composer.addPass(FXAAPass)
+            else state.composer.removePass(FXAAPass)
+        }
+
+        if (Low != undefined && Low != state.settings.Low) {
+            state.settings.Low = Low
+            state.renderer.shadowMap.enabled = Low ? false : true;
+
+            for (let i in state.sceneObjs) {
+                let obj = state.sceneObjs[i]
+                if (obj?.COLOR) {
+                    obj.material = Low ? new THREE.MeshBasicMaterial({ color: obj.COLOR }) : new THREE.MeshPhongMaterial({ color: obj.COLOR, emissive: 'hsl(0, 0%, 0%)' })
+                    obj.material.needsUpdate = true
+                }
+            }
+        }
 
         if (!isNaN(difficulty) && difficulty != state.settings.difficulty && state.gameStage == 'menu') {
             state.settings.difficulty = difficulty
@@ -133,16 +166,18 @@ function createGame(Listener, canvas, THREE) {
             alert('A dificuldade só pode ser mudada no menu principal.')
         }
 
-        console.log(shaders)
         if (!isNaN(shaders) && shaders != state.settings.shaders) {
             let currentShadersPass = state.settings.shadersPass//state.Shaders[Object.keys(state.Shaders)[state.settings.shaders-1]]
             if (currentShadersPass) state.composer.removePass(currentShadersPass)
 
             state.settings.shaders = shaders
-            let newShaders = state.Shaders[Object.keys(state.Shaders)[state.settings.shaders-1]]
+            let shadersName = Object.keys(state.Shaders)[state.settings.shaders-1]
+            let newShaders = state.Shaders[shadersName]
 
             if (newShaders) {
-                let newShadersPass = new ShaderPass(newShaders)
+                let newShadersPass = null
+                if (shadersName.includes('Pass')) newShadersPass = new newShaders(scene, state.camera)
+                else newShadersPass = new ShaderPass(newShaders)
                 state.composer.addPass(newShadersPass)
                 state.settings.shadersPass = newShadersPass
             }
@@ -225,7 +260,10 @@ function createGame(Listener, canvas, THREE) {
             shadowQuality: 0,
             textureQuality: 0,
             shaders: 0,
-            VSync: true
+            Vignette: false,
+            FXAA: false,
+            Low: true,
+            VSync: true,
         }
 
         let container = document.getElementById('container');
@@ -255,12 +293,12 @@ function createGame(Listener, canvas, THREE) {
         //
 
         const VignettePass = new ShaderPass(VignetteShader);
-        const fxaaPass = new ShaderPass(FXAAShader);
+        const FXAAPass = new ShaderPass(FXAAShader);
         const outputPass = new OutputPass();
         const pixelRatio = renderer.getPixelRatio();
 
-        fxaaPass.material.uniforms['resolution'].value.x = 1 / (window.innerWidth * pixelRatio);
-        fxaaPass.material.uniforms['resolution'].value.y = 1 / (window.innerHeight * pixelRatio);
+        FXAAPass.material.uniforms['resolution'].value.x = 1 / (window.innerWidth * pixelRatio);
+        FXAAPass.material.uniforms['resolution'].value.y = 1 / (window.innerHeight * pixelRatio);
 
         
         let composer = new EffectComposer(renderer);
@@ -268,9 +306,12 @@ function createGame(Listener, canvas, THREE) {
         composer.addPass(outputPass);
 
         if (!lowMode) {
-            composer.addPass(fxaaPass)
+            composer.addPass(FXAAPass)
             composer.addPass(VignettePass)
         }
+
+        state.Pass.VignettePass = VignettePass
+        state.Pass.FXAAPass = FXAAPass
 
         await buildScenery({ THREE, scene, lowMode })
 

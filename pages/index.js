@@ -41,7 +41,6 @@ const Game = (props) => {
                 <link rel="stylesheet" href="/css/game/resizable.css" />
             </head>            
             <body>
-
                 <canvas id="canvas" />
                 <div id="container" />
                 <div id="screenElements" />

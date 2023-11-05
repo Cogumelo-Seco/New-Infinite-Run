@@ -31,7 +31,7 @@ export default async (ctx, canvas, game, Listener, functions) => {
                 position: absolute;
                 width: ${canvas.width*0.45}px;
                 left: ${canvas.width*0.5}px;
-                top: 55%;
+                top: 58%;
                 transform: translateY(-50%);
                 font-size: ${screenResize*8}px
             }
@@ -60,7 +60,7 @@ export default async (ctx, canvas, game, Listener, functions) => {
 
         let currentOptions = game.state.options[game.state.gameStage == 'menu' ? 'menu' : 'pause']
 
-        let Y = canvas.height*0.55-((Object.keys(game.state.options.menu).length-1)*(canvas.height*0.15))
+        let Y = canvas.height*0.58-((Object.keys(game.state.options.menu).length-1)*(canvas.height*0.15))
         for (let i in currentOptions) {
             let optionElement = document.getElementById(i+'-optionElement') || document.createElement('button')
             optionElement.id = i+'-optionElement'
@@ -208,7 +208,7 @@ export default async (ctx, canvas, game, Listener, functions) => {
 
             let shadersOptionText = document.getElementById('shadersOptionText') || document.createElement('th')
             shadersOptionText.id = 'shadersOptionText'
-            shadersOptionText.innerText = 'Shaders'
+            shadersOptionText.innerText = 'Shaders/Pass'
 
             let shadersOptionButton = document.getElementById('shadersOptionButton') || document.createElement('th')
             shadersOptionButton.id = 'shadersOptionButton'
@@ -218,6 +218,7 @@ export default async (ctx, canvas, game, Listener, functions) => {
                 <option value="0">Sem</option>
             `
             for (let i in Object.keys(game.state.Shaders)) shadersOptionSelect.innerHTML += `<option value="${Number(i)+1}">${Object.keys(game.state.Shaders)[i]}</option>`
+            shadersOptionSelect.value = game.state.settings.shaders
             shadersOptionButton.appendChild(shadersOptionSelect)
             shadersOption.appendChild(shadersOptionText)
             shadersOption.appendChild(shadersOptionButton)
@@ -254,6 +255,96 @@ export default async (ctx, canvas, game, Listener, functions) => {
 
             //
 
+            let VignetteOption = document.getElementById('VignetteOption') || document.createElement('tr')
+            VignetteOption.id = 'VignetteOption'
+
+            let VignetteOptionText = document.getElementById('VignetteOptionText') || document.createElement('th')
+            VignetteOptionText.id = 'VignetteOptionText'
+            VignetteOptionText.innerText = 'Vignette'
+
+            let VignetteOptionButton = document.getElementById('VignetteOptionButton') || document.createElement('th')
+            VignetteOptionButton.id = 'VignetteOptionButton'
+
+            let VignetteOptionLabel = document.createElement('label')
+            VignetteOptionLabel.className = 'switch'
+
+            let VignetteOptionInput = document.createElement('input')
+            VignetteOptionInput.type = 'checkbox'
+            VignetteOptionInput.id = 'VignetteOptionInput'
+            VignetteOptionLabel.appendChild(VignetteOptionInput)
+
+            let VignetteOptionSpan = document.createElement('span')
+            VignetteOptionSpan.className = 'slider'
+            VignetteOptionLabel.appendChild(VignetteOptionSpan)
+
+            VignetteOptionInput.checked = game.state.settings.Vignette
+            VignetteOptionButton.appendChild(VignetteOptionLabel)
+
+            VignetteOption.appendChild(VignetteOptionText)
+            VignetteOption.appendChild(VignetteOptionButton)
+
+            //
+
+            let FXAAOption = document.getElementById('FXAAOption') || document.createElement('tr')
+            FXAAOption.id = 'FXAAOption'
+
+            let FXAAOptionText = document.getElementById('FXAAOptionText') || document.createElement('th')
+            FXAAOptionText.id = 'FXAAOptionText'
+            FXAAOptionText.innerText = 'FXAA'
+
+            let FXAAOptionButton = document.getElementById('FXAAOptionButton') || document.createElement('th')
+            FXAAOptionButton.id = 'FXAAOptionButton'
+
+            let FXAAOptionLabel = document.createElement('label')
+            FXAAOptionLabel.className = 'switch'
+
+            let FXAAOptionInput = document.createElement('input')
+            FXAAOptionInput.type = 'checkbox'
+            FXAAOptionInput.id = 'FXAAOptionInput'
+            FXAAOptionLabel.appendChild(FXAAOptionInput)
+
+            let FXAAOptionSpan = document.createElement('span')
+            FXAAOptionSpan.className = 'slider'
+            FXAAOptionLabel.appendChild(FXAAOptionSpan)
+
+            FXAAOptionInput.checked = game.state.settings.FXAA
+            FXAAOptionButton.appendChild(FXAAOptionLabel)
+
+            FXAAOption.appendChild(FXAAOptionText)
+            FXAAOption.appendChild(FXAAOptionButton)
+
+            //
+
+            let LowOption = document.getElementById('LowOption') || document.createElement('tr')
+            LowOption.id = 'LowOption'
+
+            let LowOptionText = document.getElementById('LowOptionText') || document.createElement('th')
+            LowOptionText.id = 'LowOptionText'
+            LowOptionText.innerText = 'Modo desempenho'
+
+            let LowOptionButton = document.getElementById('LowOptionButton') || document.createElement('th')
+            LowOptionButton.id = 'LowOptionButton'
+
+            let LowOptionLabel = document.createElement('label')
+            LowOptionLabel.className = 'switch'
+
+            let LowOptionInput = document.createElement('input')
+            LowOptionInput.type = 'checkbox'
+            LowOptionInput.id = 'LowOptionInput'
+            LowOptionLabel.appendChild(LowOptionInput)
+
+            let LowOptionSpan = document.createElement('span')
+            LowOptionSpan.className = 'slider'
+            LowOptionLabel.appendChild(LowOptionSpan)
+
+            LowOptionInput.checked = game.state.settings.Low
+            LowOptionButton.appendChild(LowOptionLabel)
+
+            LowOption.appendChild(LowOptionText)
+            LowOption.appendChild(LowOptionButton)
+
+            //
+
             let ApplyChangesButton = document.getElementById('ApplyChangesButton') || document.createElement('button')
             ApplyChangesButton.id = 'ApplyChangesButton'
             ApplyChangesButton.innerText = 'Aplicar Alterações'
@@ -263,7 +354,10 @@ export default async (ctx, canvas, game, Listener, functions) => {
                     shadowQuality: Number(shadowOptionButtonSelect.value), 
                     renderingQuality: Number(rendererOptionButtonSelect.value),
                     difficulty: Number(difficultyOptionButtonSelect.value),
-                    shaders: Number(shadersOptionSelect.value)
+                    shaders: Number(shadersOptionSelect.value),
+                    Vignette: Boolean(VignetteOptionInput.checked),
+                    FXAA: Boolean(FXAAOptionInput.checked),
+                    Low: Boolean(LowOptionInput.checked),
                 })
 
                 game.state.settings.textureQuality = Number(textureOptionSelect.value)
@@ -282,6 +376,9 @@ export default async (ctx, canvas, game, Listener, functions) => {
             optionScreenElement.appendChild(rendererOption)
             optionScreenElement.appendChild(textureOption)
             optionScreenElement.appendChild(shadersOption)
+            optionScreenElement.appendChild(VignetteOption)
+            optionScreenElement.appendChild(FXAAOption)
+            optionScreenElement.appendChild(LowOption)
             optionScreenElement.appendChild(VSyncOption)
             menuElement.appendChild(optionScreenElement)
 

@@ -3,7 +3,7 @@ import { FXAAShader } from 'three/addons/shaders/FXAAShader.js';
 import { CopyShader } from 'three/addons/shaders/CopyShader.js';
 
 export default (state, cookie) => {
-    state.buttons['PlayGame'] = {
+    /*state.buttons['PlayGame'] = {
         minX: 406,
         maxX: 593,
         minY: 415,
@@ -53,6 +53,20 @@ export default (state, cookie) => {
         onOver: () => state.Game.playSoundEffect('coin', { playbackRate: 15 }),
         onClick: () => {
             state.Game.state.gameState = 'menu'
+        }
+    }*/
+    
+    state.buttons['CreatorText'] = {
+        minX: 930,
+        maxX: 1000,
+        minY: 950,
+        maxY: 1000,
+        pointer: true,
+        over: false,
+        //gameState: [ 'dead' ],
+        //onOver: () => state.Game.playSoundEffect('coin', { playbackRate: 15 }),
+        onClick: () => {
+            open('https://www.instagram.com/wellingtonfelipe_cogu/')
         }
     }
 }

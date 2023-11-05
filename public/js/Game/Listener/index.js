@@ -17,11 +17,13 @@ module.exports = (cookie) => {
 
         let X = Math.floor(event.pageX/window.innerWidth*1000)
         let Y = Math.floor(event.pageY/window.window.innerHeight*1000)
+
+        console.log(X, Y)
         
         let onAButton = false
-        if (state.Game) for (let i in state.buttons) {
+        if (state.game) for (let i in state.buttons) {
             let button = state.buttons[i]
-            if (X > button.minX && X < button.maxX && Y > button.minY && Y < button.maxY && button.gameState.includes(state.Game.state.gameState)) {                
+            if (X > button.minX && X < button.maxX && Y > button.minY && Y < button.maxY && (!button.gameStage || button.gameStage.includes(state.game.state.gameStage))) {
                 if (!button.over && button.onOver) button.onOver()
                 button.over = true
                 if (button.pointer) {
@@ -37,9 +39,9 @@ module.exports = (cookie) => {
         let X = Math.floor(event.pageX/window.innerWidth*1000)
         let Y = Math.floor(event.pageY/window.window.innerHeight*1000)
 
-        if (state.Game) for (let i in state.buttons) {
+        if (state.game) for (let i in state.buttons) {
             let button = state.buttons[i]
-            if (X > button.minX && X < button.maxX && Y > button.minY && Y < button.maxY && button.onClick && button.gameState.includes(state.Game.state.gameState)) button.onClick()
+            if (X > button.minX && X < button.maxX && Y > button.minY && Y < button.maxY && button.onClick && (!button.gameStage || button.gameStage.includes(state.game.state.gameStage))) button.onClick()
         }
     })
 
