@@ -66,7 +66,7 @@ export default (state, cookie) => {
         //gameState: [ 'dead' ],
         //onOver: () => state.Game.playSoundEffect('coin', { playbackRate: 15 }),
         onClick: () => {
-            open('https://www.instagram.com/wellingtonfelipe_cogu/')
+            open('https://www.instagram.com/wellingtonfelipe_kogu/')
         }
     }
 }
