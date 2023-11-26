@@ -34,6 +34,10 @@ export default async function renderGame(canvas, game, Listener, THREE) {
         screenElements.style.backgroundColor = 'rgba(0, 0, 0, 0)'
     }
 
+    if (game.state.gameStage == 'logo') {
+        require('./RenderLogo').default(ctx, canvas, game, Listener, functions)
+    }
+
     game.gameLoop()
 
     let rAF = window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.requestAnimationFrame;

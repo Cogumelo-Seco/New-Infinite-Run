@@ -29,7 +29,7 @@ export default async (state, THREE) => {
 
     let name = Math.random().toString(36).substring(2)+Math.random().toString(36).substring(2)
     state.poles[name] = {
-        speed: Math.min(2, (Math.max(state.difficultyMultiplier, 0.4)*1.5)),
+        speed: (1.5-(Math.min(state.difficultyMultiplier/2, 0.5)))*0.84,//Math.min(2, (Math.max(state.difficultyMultiplier, 0.4)*1.5)),
         pole: poleGroup,
         name
     }

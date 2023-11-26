@@ -26,10 +26,10 @@ function createGame(Listener, canvas, THREE) {
     const state = {
         debug: false,
         fps: '0-0',
-        gameStage: 'menu',
+        gameStage: 'logo',
         firstLoading: true,
         paused: false,
-        cubesPercent: [ 40, 95, 97 ],
+        cubesPercent: [ ],
         cubes: { },
         poles: { },
         player: {
@@ -81,6 +81,17 @@ function createGame(Listener, canvas, THREE) {
         lastPoleTime: +new Date(),
         playerFPSControl: 0,
         cubesFPSControl: 0,
+        animationFPSControl: 0,
+        animations: {
+            logoAnimation: {
+                frame: 0,
+                startFrame: 0,
+                endFrame: 200,
+                totalDalay: 0,
+                dalay: 0,
+                //loop: true
+            },
+        },
         Pass: { },
         Shaders: {
             FocusShader,
@@ -148,16 +159,29 @@ function createGame(Listener, canvas, THREE) {
 
         if (!isNaN(difficulty) && difficulty != state.settings.difficulty && state.gameStage == 'menu') {
             state.settings.difficulty = difficulty
+            
+            switch (difficulty) {
+                case 0:
+                    state.cubesPercent = [ 55, 92, 95, 95 ]
+                    break
+                case 1:
+                    state.cubesPercent = [ 50, 92, 95, 97 ]
+                    break
+                case 2:
+                    state.cubesPercent = [ 40, 90, 95, 97 ]
+                    break
+                case 3:
+                    state.cubesPercent = [ 30, 90, 95, 100 ]
+                    break
+            }
 
             switch (difficulty) {
                 case 3:
                     state.player.lifeLimit = 50
                     state.player.life = state.player.lifeLimit
                     state.player.scoreMultiplier = 4
-                    state.cubesPercent = [ 35, 95, 100 ]
                     break
                 default:
-                    state.cubesPercent = [ 40, 95, 97 ]
                     state.player.lifeLimit = 100
                     state.player.life = state.player.lifeLimit
                     state.player.scoreMultiplier = 1
@@ -325,7 +349,6 @@ function createGame(Listener, canvas, THREE) {
         //
 
         let openSettings = () => {
-            console.log(state.settings.renderingQuality)
             let difficultySelect = document.getElementById('difficultyOptionButtonSelect')
             let shadowButtonSelect = document.getElementById('shadowOptionButtonSelect')
             let rendererSelect = document.getElementById('rendererOptionButtonSelect')
@@ -365,6 +388,8 @@ function createGame(Listener, canvas, THREE) {
     }
 
     async function gameLoop(command) {
+        if (state.gameStage == 'logo' && state.animations.logoAnimation.frame >= state.animations.logoAnimation.endFrame) state.gameStage = 'menu'
+
         if (state.player.life <= 0 && !state.debug) {
             state.gameStage = 'end'
             state.player.cubePlayer.x = 0
@@ -379,7 +404,28 @@ function createGame(Listener, canvas, THREE) {
             if (state.currentTextMenu+1 >= state.menuTextList.length) state.currentTextMenu = 0
             else state.currentTextMenu += 1
         }
+
+        if (state.animationFPSControl+25 <= +new Date()) {
+            state.animationFPSControl = +new Date()
+
+            for (let i in state.animations) {
+                let animation = state.animations[i]
+
+                if (animation.dalay <= +new Date() && !animation.paused) {
+                    animation.frame += animation.boomerang ? animation.boomerangForward ? 1 : -1 : 1
+                    if (animation.frame > animation.endFrame) {
+                        if (!animation.boomerang) animation.frame = animation.loop ? animation.startFrame : animation.endFrame
+                        else animation.boomerangForward = animation.boomerangForward ? false : true
+                    } else if (animation.frame < animation.startFrame) {
+                        animation.boomerangForward = animation.boomerangForward ? false : true
+                        animation.frame = animation.startFrame
+                    }
+                    animation.dalay = +new Date()+animation.totalDalay
+                }
+            }
+        }
         
+
         if (state.gameStage == 'game' && !state.paused) {
             let player = state.player
             let keys = Listener.state.keys
@@ -467,7 +513,7 @@ function createGame(Listener, canvas, THREE) {
                     }
                 }
 
-                if (+new Date()-state.lastCubeTime > state.cubeBirthSpeed*state.difficultyMultiplier) {
+                if (+new Date()-state.lastCubeTime > state.cubeBirthSpeed*(state.difficultyMultiplier/1.5)) {
                     state.lastCubeTime = +new Date()
                     await addCube()
                     await addCube()

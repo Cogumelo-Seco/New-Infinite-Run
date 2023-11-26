@@ -18,7 +18,7 @@ module.exports = (cookie) => {
         let X = Math.floor(event.pageX/window.innerWidth*1000)
         let Y = Math.floor(event.pageY/window.window.innerHeight*1000)
 
-        console.log(X, Y)
+        //console.log(X, Y)
         
         let onAButton = false
         if (state.game) for (let i in state.buttons) {

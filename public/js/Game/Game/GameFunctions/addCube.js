@@ -8,8 +8,9 @@ export default async (state, THREE) => {
     let type = 'small' 
     if (typePercent >= state.cubesPercent[0]) type = 'big'
     if (typePercent >= state.cubesPercent[1]) type = 'wall'
-    if (typePercent >= state.cubesPercent[2]) type = 'special'
-    //let type = 'wall'
+    if (typePercent >= state.cubesPercent[2]) type = 'death'
+    if (typePercent >= state.cubesPercent[3]) type = 'special'
+    //type = 'death'
 
     let cube = null
     let cubeData = { type, scale: 1 }
@@ -44,6 +45,14 @@ export default async (state, THREE) => {
             cube.position.z = Z
             cubeData.color = 174
             break
+        case 'death':
+            var BoxGeometry = new THREE.BoxGeometry(0.5, 2.6, 0.5)
+            cube = new THREE.Mesh(BoxGeometry, state.settings.textureQuality == 0 ? new THREE.MeshBasicMaterial({ color: 'hsl(0, 0%, 0%)' }) : new THREE.MeshPhongMaterial({ color: 'hsl(0, 0%, 0%)', emissive: 0x000000 }))
+            cube.position.x = X
+            cube.position.y = Y+1.25
+            cube.position.z = Z
+            cubeData.color = 0
+            break
         case 'special':
             var BoxGeometry = new THREE.BoxGeometry(0.20, 0.85, 0.85)
             //cube = new THREE.Mesh(BoxGeometry, materials.specialCube)
@@ -62,7 +71,8 @@ export default async (state, THREE) => {
 
     scene.add(cube)
 
-    cubeData.speed = Math.min(2, (Math.max(state.difficultyMultiplier, 0.4)*1.5))
+    cubeData.speed = (1.5-(Math.min(state.difficultyMultiplier/2, 0.5)))*0.84//Math.min(2, (Math.max(1-state.difficultyMultiplier, 0.4)*1.5))
+    console.log(cubeData.speed)
     cubeData.cube = cube
     state.cubes[cube.name] = cubeData
 }

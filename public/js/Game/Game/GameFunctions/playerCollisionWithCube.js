@@ -10,6 +10,10 @@ export default ({ cube, state, playSong, cubeCount }) => {
             else state.player.life += 5
             playSong('specialCube.mp3', { newSong: true, volume: 0.5 })
             break
+        case 'death':
+            state.player.life = 0
+            playSong('damage.mp3', { newSong: true, volume: 0.5 })
+            break
         default:
             if (state.player.life-5 <= 0) state.player.life = 0
             else state.player.life -= 5
