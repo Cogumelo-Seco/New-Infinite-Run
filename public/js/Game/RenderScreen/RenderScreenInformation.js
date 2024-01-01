@@ -11,7 +11,7 @@ export default async (ctx, canvas, game, Listener, functions) => {
 
     //
 
-    let creatorText = 'Criado por: Kogu'
+    let creatorText = 'Criado por: Cogu'
     let difficultyText = 'Dificuldade: '+game.state.difficultyTex[game.state.settings.difficulty]
 
     

@@ -86,7 +86,7 @@ function createGame(Listener, canvas, THREE) {
             logoAnimation: {
                 frame: 0,
                 startFrame: 0,
-                endFrame: 200,
+                endFrame: 100,
                 totalDalay: 0,
                 dalay: 0,
                 //loop: true
