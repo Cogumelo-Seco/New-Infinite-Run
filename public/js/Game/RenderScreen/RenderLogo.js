@@ -33,7 +33,7 @@ export default async (ctx, canvas, game, Listener, functions) => {
 
     let logoText = document.getElementById('logoText') || document.createElement('div')
     logoText.id = 'logoText'
-    logoText.innerText = 'Kogu'
+    logoText.innerText = 'Cogu'
     logoText.style.position = 'absolute'
     logoText.style.left = '50%'
     //logoText.style.top = `${58+(alpha*5)}%`
