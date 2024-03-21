@@ -29,7 +29,7 @@ function createGame(Listener, canvas, THREE) {
         gameStage: 'logo',
         firstLoading: true,
         paused: false,
-        cubesPercent: [ ],
+        cubesPercent: [ 50, 92, 95, 97 ],
         cubes: { },
         poles: { },
         player: {
@@ -82,6 +82,7 @@ function createGame(Listener, canvas, THREE) {
         playerFPSControl: 0,
         cubesFPSControl: 0,
         animationFPSControl: 0,
+        regenFPSControl: 0,
         animations: {
             logoAnimation: {
                 frame: 0,
@@ -162,7 +163,7 @@ function createGame(Listener, canvas, THREE) {
             
             switch (difficulty) {
                 case 0:
-                    state.cubesPercent = [ 55, 92, 95, 95 ]
+                    state.cubesPercent = [ 60, 94, 95, 95 ]
                     break
                 case 1:
                     state.cubesPercent = [ 50, 92, 95, 97 ]
@@ -403,6 +404,12 @@ function createGame(Listener, canvas, THREE) {
             state.textMenuTime = +new Date()
             if (state.currentTextMenu+1 >= state.menuTextList.length) state.currentTextMenu = 0
             else state.currentTextMenu += 1
+        }
+
+        if (state.regenFPSControl+4000 <= +new Date() && state.settings.difficulty <= 1) {
+            state.regenFPSControl = +new Date()
+            if (state.player.life+(state.settings.difficulty == 1 ? 1 : 2) <= state.player.lifeLimit) state.player.life += state.settings.difficulty == 1 ? 1 : 2
+            else state.player.life = state.player.lifeLimit
         }
 
         if (state.animationFPSControl+25 <= +new Date()) {
