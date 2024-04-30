@@ -50,9 +50,9 @@ function createGame(Listener, canvas, THREE) {
         },
         settings: {
             difficulty: 1,
-            renderingQuality: 2,
-            renderingQualityValue: 2,
-            shadowQuality: 3,
+            renderingQuality: 1,
+            renderingQualityValue: 1,
+            shadowQuality: 2,
             textureQuality: 1,
             shaders: 0,
             Vignette: true,
